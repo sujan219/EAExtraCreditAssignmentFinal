@@ -19,6 +19,12 @@ public class ProjectController {
 	@Autowired
 	private ProjectService projectService;
 	
+	@RequestMapping(value={"/", "/projects"})
+	public String main(Model model){
+		setDashboardModel(model);
+		return "dashboard";
+	}
+	
 	@RequestMapping(value="/projects_add")
 	public String open(Model model){
 		Project p = new Project();

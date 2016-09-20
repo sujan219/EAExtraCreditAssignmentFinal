@@ -112,7 +112,9 @@ public class Project {
 	@ManyToMany(cascade=CascadeType.ALL, mappedBy="projects")
 	private List<Beneficiary> beneficiaries;
 
-	public Project(){}
+	public Project(){
+		this.status = Status.PENDING;
+	}
 	
 	public Project(String name, String description, String location, String startDate, String endDate) {
 		this.name = name;

@@ -11,7 +11,9 @@
 	<context:annotation-config></context:annotation-config>
 	<context:component-scan base-package="cs544.*"></context:component-scan>
 
-	<jpa:repositories base-package="cs544.extra.repository" />
+	<jpa:repositories base-package="cs544.extra.repository"
+	entity-manager-factory-ref="myEmf"
+	transaction-manager-ref="txManager" />
 
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -31,26 +33,22 @@
 		<property name="password" value="root" />
 	</bean>
 
-	<bean id="sessionFactory"
-		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-		<property name="dataSource" ref="dataSource" />
-		<property name="hibernateProperties" ref="hibPro" />
-		<property name="annotatedClasses">
-			<list>
-				<value>cs544.extra.domain.Beneficiary</value>
-				<value>cs544.extra.domain.Project</value>
-				<value>cs544.extra.domain.Resource</value>
-				<value>cs544.extra.domain.Task</value>
-				<value>cs544.extra.domain.Volunteer</value>
-			</list>
-		</property>
-	</bean>
+
+	<bean id="myEmf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="packagesToScan" value="cs544.extra.domain" />
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+        </property>
+        <property name="jpaProperties" ref="hibPro">
+        </property>
+    </bean>
 
 	<bean id="hibPro"
 		class="org.springframework.beans.factory.config.PropertiesFactoryBean">
 		<property name="properties">
 			<props>
-				<prop key="hibernate.hbm2ddl.auto">create</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
 				<prop key="connection.pool.size">1</prop>
 				<prop key="hibernate.show_sql">true</prop>
@@ -62,10 +60,7 @@
 
 	<tx:annotation-driven transaction-manager="txManager" />
 	<bean id="txManager"
-		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
-		<property name="sessionFactory" ref="sessionFactory" />
+		class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="myEmf" />
 	</bean>
-
-	<import resource="spring-security.xml" />
-	
 </beans>

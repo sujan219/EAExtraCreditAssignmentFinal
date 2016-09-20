@@ -18,9 +18,10 @@ import cs544.extra.domain.Project;
 import cs544.extra.domain.Task;
 
 @Repository
+@Deprecated
 public class ProjectDAO  {
 
-	@Resource
+	//@Resource
 	private SessionFactory sf;
 	
 	public SessionFactory getSf() {

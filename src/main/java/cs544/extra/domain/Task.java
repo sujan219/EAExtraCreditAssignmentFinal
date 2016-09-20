@@ -61,11 +61,11 @@ public class Task {
 		this.resources = resources;
 	}
 
-	public List<Volunteer> getVolunteers() {
+	public List<User> getVolunteers() {
 		return volunteers;
 	}
 
-	public void setVolunteers(List<Volunteer> volunteers) {
+	public void setVolunteers(List<User> volunteers) {
 		this.volunteers = volunteers;
 	}
 
@@ -76,7 +76,7 @@ public class Task {
 	private List<Resource> resources;
 	
 	@ManyToMany(cascade=CascadeType.ALL, mappedBy="tasks")
-	private List<Volunteer> volunteers;
+	private List<User> volunteers;
 
 	public Task(){
 		status = Status.PENDING;
@@ -87,7 +87,7 @@ public class Task {
 		this.endDate = endDate;
 		status = Status.PENDING;
 		resources = new ArrayList<Resource>();
-		volunteers = new ArrayList<Volunteer>();
+		volunteers = new ArrayList<User>();
 	}
 
 	public Project getProject() {
